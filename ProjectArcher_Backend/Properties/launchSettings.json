@@ -34,6 +34,14 @@
       "httpPort": 58003,
       "useSSL": true,
       "sslPort": 44320
+    },
+    "ProjectArcher_Backend_School": {
+      "commandName": "Project",
+      "launchBrowser": false,
+      "environmentVariables": {
+        "ASPNETCORE_ENVIRONMENT": "Development"
+      },
+      "applicationUrl": "https://10.0.2.124:5001;http://10.0.2.124:5000"
     }
   }
 }

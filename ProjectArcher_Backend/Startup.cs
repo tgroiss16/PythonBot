@@ -30,8 +30,9 @@ namespace ProjectArcher_Backend
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
 
             services.AddScoped<IContactService, ContactService>();
+            services.AddScoped<ICompanyService, CompanyService>();
 
-            services.AddDbContext<PostgresContext>(opt => opt.UseNpgsql(Configuration.GetValue<string>("DataBaseConnectionString")));
+            services.AddDbContext<postgresContext>(opt => opt.UseNpgsql(Configuration.GetValue<string>("DataBaseConnectionString")));
         }
 
         public void Configure(IApplicationBuilder app, IHostingEnvironment env)

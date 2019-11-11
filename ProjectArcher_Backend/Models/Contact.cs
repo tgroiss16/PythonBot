@@ -5,6 +5,11 @@ namespace ProjectArcher_Backend.Models
 {
     public partial class Contact
     {
+        public Contact()
+        {
+            Company = new HashSet<Company>();
+        }
+
         public long Id { get; set; }
         public long CompanyId { get; set; }
         public string FirstName { get; set; }
@@ -21,6 +26,7 @@ namespace ProjectArcher_Backend.Models
         public string Source { get; set; }
         public long InternalContact { get; set; }
 
-        public virtual Company Company { get; set; }
+        public virtual Company CompanyNavigation { get; set; }
+        public virtual ICollection<Company> Company { get; set; }
     }
 }

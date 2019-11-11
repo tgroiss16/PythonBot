@@ -22,6 +22,7 @@ namespace ProjectArcher_Backend.Models
         public string Note { get; set; }
         public long? InternalContact { get; set; }
         public long? ExternalContact { get; set; }
+        public string Name { get; set; }
 
         public virtual ICollection<Contact> Contact { get; set; }
     }

@@ -4,13 +4,13 @@ using Microsoft.EntityFrameworkCore.Metadata;
 
 namespace ProjectArcher_Backend.Models
 {
-    public partial class PostgresContext : DbContext
+    public partial class postgresContext : DbContext
     {
-        public PostgresContext()
+        public postgresContext()
         {
         }
 
-        public PostgresContext(DbContextOptions<PostgresContext> options)
+        public postgresContext(DbContextOptions<postgresContext> options)
             : base(options)
         {
         }
@@ -40,6 +40,8 @@ namespace ProjectArcher_Backend.Models
                 entity.Property(e => e.InternalContact).HasColumnName("internal_contact");
 
                 entity.Property(e => e.IsActive).HasColumnName("is_active");
+
+                entity.Property(e => e.Name).HasColumnName("name");
 
                 entity.Property(e => e.Note).HasColumnName("note");
 
@@ -110,7 +112,7 @@ namespace ProjectArcher_Backend.Models
                     .HasColumnName("title_prefix")
                     .HasMaxLength(100);
 
-                entity.HasOne(d => d.Company)
+                entity.HasOne(d => d.CompanyNavigation)
                     .WithMany(p => p.Contact)
                     .HasForeignKey(d => d.CompanyId)
                     .OnDelete(DeleteBehavior.ClientSetNull)
