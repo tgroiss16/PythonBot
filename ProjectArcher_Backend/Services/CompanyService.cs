@@ -4,13 +4,10 @@ using System.Linq;
 using System.Threading.Tasks;
 using ProjectArcher_Backend.Models;
 
-namespace ProjectArcher_Backend.Services
-{
-    public class CompanyService : ICompanyService
-    {
+namespace ProjectArcher_Backend.Services {
+    public class CompanyService : ICompanyService {
         private readonly postgresContext _context;
-        public CompanyService(postgresContext context)
-        {
+        public CompanyService(postgresContext context) {
             _context = context;
         }
 
