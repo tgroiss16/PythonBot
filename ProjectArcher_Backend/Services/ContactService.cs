@@ -16,27 +16,37 @@ namespace ProjectArcher_Backend.Services
 
         public List<Contact> GetContacts()
         {
-            return _context.Contact.OrderBy(contact => contact.FirstName).ToList();
+            var contactToReturn = _context.Contact.OrderBy(contact => contact.FirstName).ToList();
+            _context.SaveChanges();
+            return contactToReturn;
         }
 
         public Contact AddContact(Contact contact)
         {
-            return _context.Contact.Add(contact).Entity;
+            var contactToReturn = _context.Contact.Add(contact).Entity;
+            _context.SaveChanges();
+            return contactToReturn;
         }
 
         public Contact UpdateContact(Contact contact)
         {
-            return _context.Contact.Update(contact).Entity;
+            var contactToReturn = _context.Contact.Update(contact).Entity;
+            _context.SaveChanges();
+            return contactToReturn;
         }
 
         public Contact DeleteContact(int id)
         {
-            return _context.Contact.Remove(GetContact(id)).Entity;
+            var contactToReturn = _context.Contact.Remove(GetContact(id)).Entity;
+            _context.SaveChanges();
+            return contactToReturn;
         }
 
         public Contact GetContact(int id)
         {
-            return _context.Contact.Where(contact => contact.Id == id).Single();
+            var contactToReturn = _context.Contact.Where(contact => contact.Id == id).Single();
+            _context.SaveChanges();
+            return contactToReturn;
         }
     }
 }

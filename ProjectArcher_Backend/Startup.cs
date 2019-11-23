@@ -32,6 +32,13 @@ namespace ProjectArcher_Backend
             services.AddScoped<IContactService, ContactService>();
             services.AddScoped<ICompanyService, CompanyService>();
 
+            services.AddCors(options => options.AddPolicy("CorsPolicy", builder =>
+            {
+                builder.AllowAnyOrigin()
+                       .AllowAnyMethod()
+                       .AllowAnyHeader();
+            }));
+
             services.AddDbContext<postgresContext>(opt => opt.UseNpgsql(Configuration.GetValue<string>("DataBaseConnectionString")));
         }
 

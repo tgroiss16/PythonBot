@@ -8,6 +8,7 @@ namespace ProjectArcher_Backend.Models
         public Company()
         {
             Contact = new HashSet<Contact>();
+            TimelineCompany = new HashSet<TimelineCompany>();
         }
 
         public long Id { get; set; }
@@ -15,6 +16,7 @@ namespace ProjectArcher_Backend.Models
         public string City { get; set; }
         public string PostalCode { get; set; }
         public string Street { get; set; }
+        public string Country { get; set; }
         public string PhoneNumberMobile { get; set; }
         public string PhoneNumberLandline { get; set; }
         public string Email { get; set; }
@@ -25,5 +27,6 @@ namespace ProjectArcher_Backend.Models
         public string Name { get; set; }
 
         public virtual ICollection<Contact> Contact { get; set; }
+        public virtual ICollection<TimelineCompany> TimelineCompany { get; set; }
     }
 }

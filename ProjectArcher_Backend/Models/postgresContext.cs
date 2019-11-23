@@ -17,6 +17,8 @@ namespace ProjectArcher_Backend.Models
 
         public virtual DbSet<Company> Company { get; set; }
         public virtual DbSet<Contact> Contact { get; set; }
+        public virtual DbSet<TimelineCompany> TimelineCompany { get; set; }
+        public virtual DbSet<TimelineContact> TimelineContact { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -30,6 +32,11 @@ namespace ProjectArcher_Backend.Models
                     .IsRequired()
                     .HasColumnName("city")
                     .HasMaxLength(125);
+
+                entity.Property(e => e.Country)
+                    .IsRequired()
+                    .HasColumnName("country")
+                    .HasMaxLength(75);
 
                 entity.Property(e => e.Email)
                     .HasColumnName("email")
@@ -112,12 +119,84 @@ namespace ProjectArcher_Backend.Models
                     .HasColumnName("title_prefix")
                     .HasMaxLength(100);
 
-                entity.HasOne(d => d.CompanyNavigation)
+                entity.HasOne(d => d.Company)
                     .WithMany(p => p.Contact)
                     .HasForeignKey(d => d.CompanyId)
                     .OnDelete(DeleteBehavior.ClientSetNull)
                     .HasConstraintName("fkey_companyId");
             });
+
+            modelBuilder.Entity<TimelineCompany>(entity =>
+            {
+                entity.ToTable("Timeline_Company");
+
+                entity.Property(e => e.Id).HasColumnName("id");
+
+                entity.Property(e => e.Attachment).HasColumnName("attachment");
+
+                entity.Property(e => e.CompanyId).HasColumnName("company_id");
+
+                entity.Property(e => e.FileName)
+                    .HasColumnName("file_name")
+                    .HasMaxLength(250);
+
+                entity.Property(e => e.Note).HasColumnName("note");
+
+                entity.Property(e => e.Timestamp)
+                    .HasColumnName("timestamp")
+                    .HasColumnType("timestamp(6) without time zone")
+                    .HasDefaultValueSql("CURRENT_TIMESTAMP");
+
+                entity.Property(e => e.Title)
+                    .HasColumnName("title")
+                    .HasMaxLength(250);
+
+                entity.HasOne(d => d.Company)
+                    .WithMany(p => p.TimelineCompany)
+                    .HasForeignKey(d => d.CompanyId)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("fkCompanyIdId");
+            });
+
+            modelBuilder.Entity<TimelineContact>(entity =>
+            {
+                entity.ToTable("Timeline_Contact");
+
+                entity.Property(e => e.Id).HasColumnName("id");
+
+                entity.Property(e => e.Attachment).HasColumnName("attachment");
+
+                entity.Property(e => e.ContactId).HasColumnName("contact_id");
+
+                entity.Property(e => e.FileName)
+                    .HasColumnName("file_name")
+                    .HasMaxLength(250);
+
+                entity.Property(e => e.Note).HasColumnName("note");
+
+                entity.Property(e => e.Timestamp)
+                    .HasColumnName("timestamp")
+                    .HasColumnType("timestamp(6) without time zone")
+                    .HasDefaultValueSql("CURRENT_TIMESTAMP");
+
+                entity.Property(e => e.Title)
+                    .HasColumnName("title")
+                    .HasMaxLength(250);
+
+                entity.HasOne(d => d.Contact)
+                    .WithMany(p => p.TimelineContact)
+                    .HasForeignKey(d => d.ContactId)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("fkContactIdId");
+            });
+
+            modelBuilder.HasSequence("Company_id_seq");
+
+            modelBuilder.HasSequence("Contact_id_seq");
+
+            modelBuilder.HasSequence("Timeline_Company_id_seq").HasMin(0);
+
+            modelBuilder.HasSequence("Timeline_Contact_id_seq").HasMin(0);
         }
     }
 }

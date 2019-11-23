@@ -16,27 +16,37 @@ namespace ProjectArcher_Backend.Services
 
         public Company AddCompany(Company company)
         {
-            return _context.Company.Add(company).Entity;
+            var companyToReturn = _context.Company.Add(company).Entity;
+            _context.SaveChanges();
+            return companyToReturn;
         }
 
         public Company DeleteCompany(int id)
         {
-            return _context.Company.Remove(GetCompany(id)).Entity;
+            var companyToReturn = _context.Company.Remove(GetCompany(id)).Entity;
+            _context.SaveChanges();
+            return companyToReturn;
         }
 
         public List<Company> GetCompanys()
         {
-            return _context.Company.OrderBy(company => company.Name).ToList();
+            var companies = _context.Company.OrderBy(company => company.Name).ToList();
+            _context.SaveChanges();
+            return companies;
         }
 
         public Company GetCompany(int id)
         {
-            return _context.Company.Where(company => company.Id == id).Single();
+            var companyToReturn = _context.Company.Where(company => company.Id == id).Single();
+            _context.SaveChanges();
+            return companyToReturn;
         }
 
         public Company UpdateCompany(Company company)
         {
-            return _context.Company.Update(company).Entity;
+            var companyToReturn = _context.Company.Update(company).Entity;
+            _context.SaveChanges();
+            return companyToReturn;
         }
     }
 }
