@@ -45,5 +45,48 @@ namespace ProjectArcher_Backend.Services {
             _context.SaveChanges();
             return companyToReturn;
         }
+
+        public List<Company> FilterCompanys(long? id, bool? isActive, string city, string postalCode, string street,
+            string phoneNumberMobile, string phoneNumberLandline, string email, string website, string note, long? internalContact,
+            long? externalContact, string name)
+        {
+            city = city ?? "";
+            postalCode = postalCode ?? "";
+            street = street ?? "";
+            phoneNumberMobile = phoneNumberMobile ?? "";
+            phoneNumberLandline = phoneNumberLandline ?? "";
+            email = email ?? "";
+            website = website ?? "";
+            note = note ?? "";
+            name = name ?? "";
+
+            var filtered = _context.Company.Where(c => c.City.Contains(city)
+                && c.PostalCode.Contains(postalCode)
+                && c.Street.Contains(street)
+                && c.PhoneNumberMobile.Contains(phoneNumberMobile)
+                && c.PhoneNumberLandline.Contains(phoneNumberLandline)
+                && c.Email.Contains(email)
+                && c.Website.Contains(website)
+                && c.Note.Contains(note)
+                && c.Name.Contains(name));
+
+            if (id != null)
+            {
+                filtered = filtered.Where(c => c.Id == id);
+            }
+            if (isActive != null)
+            {
+                filtered = filtered.Where(c => c.IsActive == isActive);
+            }
+            if (internalContact != null)
+            {
+                filtered = filtered.Where(c => c.InternalContact == internalContact);
+            }
+            if (externalContact != null)
+            {
+                filtered = filtered.Where(c => c.ExternalContact == externalContact);
+            }
+            return filtered.ToList();
+        }
     }
 }
