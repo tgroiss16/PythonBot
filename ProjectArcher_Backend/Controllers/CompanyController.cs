@@ -25,7 +25,12 @@ namespace ProjectArcher_Backend.Controllers
             return Ok(_companyService.GetCompanys());
         }
 
-        [HttpGet("{filter}")]
+        [HttpGet("all/{filter}")]
+        public ActionResult<List<Company>> FilterAllProperties(string term) {
+            return Ok(_companyService.FilterAllProperties(term));
+        }
+
+        [HttpGet("props/{filter}")]
         public ActionResult<List<Company>> FilterAllCompanys(long? id, bool? isActive, string city, string postalCode, string street, string phoneNumberMobile, string phoneNumberLandline, string email, string website, string note, long? internalContact, long? externalContact, string name) {
             return Ok(_companyService.FilterCompanys(id, isActive, city, postalCode, street, phoneNumberMobile, phoneNumberLandline, email, website, note, internalContact, externalContact, name));
         }

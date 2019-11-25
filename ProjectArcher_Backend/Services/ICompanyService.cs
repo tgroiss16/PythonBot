@@ -16,5 +16,6 @@ namespace ProjectArcher_Backend.Services
 
         List<Company> FilterCompanys(long? id, bool? isActive, string city, string postalCode, string street, string phoneNumberMobile, 
             string phoneNumberLandline, string email, string website, string note, long? internalContact, long? externalContact, string name);
+        List<Company> FilterAllProperties(string term);
     }
 }
