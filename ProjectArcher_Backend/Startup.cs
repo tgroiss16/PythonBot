@@ -31,6 +31,8 @@ namespace ProjectArcher_Backend
 
             services.AddScoped<IContactService, ContactService>();
             services.AddScoped<ICompanyService, CompanyService>();
+            services.AddScoped<ICompanyTimelineService, CompanyTimelineService>();
+            services.AddScoped<IContactTimelineService, ContactTimelineService>();
 
             services.AddCors(options => options.AddPolicy("CorsPolicy", builder =>
             {
