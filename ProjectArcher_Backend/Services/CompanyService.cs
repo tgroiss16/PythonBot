@@ -45,5 +45,28 @@ namespace ProjectArcher_Backend.Services {
             _context.SaveChanges();
             return companyToReturn;
         }
+
+        public List<Keyword> GetKeywordsForCompany(int companyId)
+        {
+            var keywordCompanies = _context.KeywordCompany.Where(keyword => keyword.CompanyId == companyId)
+                .Select(keywordCompany => keywordCompany.KeywordId)
+                .ToList();
+            return _context.Keyword.Where(keyword => keywordCompanies.Contains(keyword.Id)).ToList();
+        }
+
+        public KeywordCompany AddKeywordToCompany(KeywordCompany keyword)
+        {
+            var keywordCompany = _context.KeywordCompany.Add(keyword).Entity;
+            _context.SaveChanges();
+            return keywordCompany;
+
+        }
+
+        public KeywordCompany DeleteKeywordFromCompany(KeywordCompany keyword)
+        {
+            var keywordCompany = _context.KeywordCompany.Remove(keyword).Entity;
+            _context.SaveChanges();
+            return keywordCompany;
+        }
     }
 }

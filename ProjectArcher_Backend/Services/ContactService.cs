@@ -48,5 +48,27 @@ namespace ProjectArcher_Backend.Services
             _context.SaveChanges();
             return contactToReturn;
         }
+
+        public List<Keyword> GetKeywordsForContact(int contactId)
+        {
+            var keywordContacts = _context.KeywordContact.Where(keyword => keyword.ContactId == contactId)
+                .Select(keywordCompany => keywordCompany.KeywordId)
+                .ToList();
+            return _context.Keyword.Where(keyword => keywordContacts.Contains(keyword.Id)).ToList();
+        }
+
+        public KeywordContact AddKeywordToContacty(KeywordContact keyword)
+        {
+            var keywordContact = _context.KeywordContact.Add(keyword).Entity;
+            _context.SaveChanges();
+            return keywordContact;
+        }
+
+        public KeywordContact DeleteKeywordFromContact(KeywordContact keyword)
+        {
+            var keywordContact = _context.KeywordContact.Remove(keyword).Entity;
+            _context.SaveChanges();
+            return keywordContact;
+        }
     }
 }
