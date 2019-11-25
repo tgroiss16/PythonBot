@@ -7,7 +7,7 @@ namespace ProjectArcher_Backend.Models
     {
         public Contact()
         {
-            Company = new HashSet<Company>();
+            TimelineContact = new HashSet<TimelineContact>();
         }
 
         public long Id { get; set; }
@@ -26,7 +26,7 @@ namespace ProjectArcher_Backend.Models
         public string Source { get; set; }
         public long InternalContact { get; set; }
 
-        public virtual Company CompanyNavigation { get; set; }
-        public virtual ICollection<Company> Company { get; set; }
+        public virtual Company Company { get; set; }
+        public virtual ICollection<TimelineContact> TimelineContact { get; set; }
     }
 }

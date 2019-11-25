@@ -11,11 +11,45 @@ namespace ProjectArcher_Backend.Services {
             _context = context;
         }
 
+        public Company AddCompany(Company company)
+        {
+            var companyToReturn = _context.Company.Add(company).Entity;
+            _context.SaveChanges();
+            return companyToReturn;
+        }
+
+        public Company DeleteCompany(int id)
+        {
+            var companyToReturn = _context.Company.Remove(GetCompany(id)).Entity;
+            _context.SaveChanges();
+            return companyToReturn;
+        }
+
+        public List<Company> GetCompanys()
+        {
+            var companies = _context.Company.OrderBy(company => company.Name).ToList();
+            _context.SaveChanges();
+            return companies;
+        }
+
+        public Company GetCompany(int id)
+        {
+            var companyToReturn = _context.Company.Where(company => company.Id == id).Single();
+            _context.SaveChanges();
+            return companyToReturn;
+        }
+
+        public Company UpdateCompany(Company company)
+        {
+            var companyToReturn = _context.Company.Update(company).Entity;
+            _context.SaveChanges();
+            return companyToReturn;
+        }
 
         public List<Company> FilterCompanys(long? id, bool? isActive, string city, string postalCode, string street,
             string phoneNumberMobile, string phoneNumberLandline, string email, string website, string note, long? internalContact,
-            long? externalContact, string name) {
-
+            long? externalContact, string name)
+        {
             city = city ?? "";
             postalCode = postalCode ?? "";
             street = street ?? "";
@@ -41,41 +75,23 @@ namespace ProjectArcher_Backend.Services {
                 && c.Note.Contains(note)
                 && c.Name.Contains(name));
 
-            if (id != null) {
+            if (id != null)
+            {
                 filtered = filtered.Where(c => c.Id == id);
             }
-            if (isActive != null) {
+            if (isActive != null)
+            {
                 filtered = filtered.Where(c => c.IsActive == isActive);
             }
-            if (internalContact != null) {
+            if (internalContact != null)
+            {
                 filtered = filtered.Where(c => c.InternalContact == internalContact);
             }
-            if (externalContact != null) {
+            if (externalContact != null)
+            {
                 filtered = filtered.Where(c => c.ExternalContact == externalContact);
             }
             return filtered.ToList();
         }
-
-
-        public Company AddCompany(Company company) {
-            return _context.Company.Add(company).Entity;
-        }
-
-        public Company DeleteCompany(int id) {
-            return _context.Company.Remove(GetCompany(id)).Entity;
-        }
-
-        public List<Company> GetCompanys() {
-            return _context.Company.OrderBy(company => company.Name).ToList();
-        }
-
-        public Company GetCompany(int id) {
-            return _context.Company.Where(company => company.Id == id).Single();
-        }
-
-        public Company UpdateCompany(Company company) {
-            return _context.Company.Update(company).Entity;
-        }
-
     }
 }
