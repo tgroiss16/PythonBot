@@ -26,7 +26,12 @@ namespace ProjectArcher_Backend.Services {
             note = note ?? "";
             name = name ?? "";
 
-            var filtered = _context.Company.Where(c => c.City.Contains(city)
+            var filtered2 = new List<Company>();
+            filtered2.Add(new Company { IsActive = true, City = "sven", Email="jdsfkj", PostalCode = "sdjf", Street= "jsdkf", PhoneNumberLandline = "99", PhoneNumberMobile="34", Website = "skdjf", Name="kdsjf", Note="jkdsjf" });
+            filtered2.Add(new Company { IsActive = false, City = "sven", Email="jdsfkj", PostalCode = "sdjf", Street= "jsdkf", PhoneNumberLandline = "99", PhoneNumberMobile="34", Website = "skdjf", Name="kdsjf", Note="jkdsjf" });
+            filtered2.Add(new Company { City = "sven", Email="jdsfkj", PostalCode = "sdjf", Street= "jsdkf", PhoneNumberLandline = "99", PhoneNumberMobile="34", Website = "skdjf", Name="kdsjf", Note="jkdsjf" });
+
+            var filtered = filtered2.Where(c => c.City.Contains(city)
                 && c.PostalCode.Contains(postalCode)
                 && c.Street.Contains(street)
                 && c.PhoneNumberMobile.Contains(phoneNumberMobile)
