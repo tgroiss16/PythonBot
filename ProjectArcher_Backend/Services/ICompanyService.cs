@@ -13,8 +13,5 @@ namespace ProjectArcher_Backend.Services
         Company UpdateCompany(Company company);
         Company DeleteCompany(int id);
         Company GetCompany(int id);
-
-        List<Company> FilterCompanys(long? id, bool? isActive, string city, string postalCode, string street, string phoneNumberMobile, 
-            string phoneNumberLandline, string email, string website, string note, long? internalContact, long? externalContact, string name);
     }
 }
