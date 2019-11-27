@@ -48,5 +48,23 @@ namespace ProjectArcher_Backend.Controllers
         {
             return Ok(_companyService.AddCompany(company));
         }
+
+        [HttpPost("keyword")]
+        public ActionResult<KeywordCompany> AddCompanyKeyword([FromBody] KeywordCompany keyword)
+        {
+            return Ok(_companyService.AddKeywordToCompany(keyword));
+        }
+
+        [HttpDelete("keyword")]
+        public ActionResult<KeywordCompany> DeleteKeywordFromCompany([FromBody] KeywordCompany keyword)
+        {
+            return Ok(_companyService.DeleteKeywordFromCompany(keyword));
+        }
+
+        [HttpGet("keyword/{id}")]
+        public ActionResult<List<Keyword>> GetKeywordsForCompany(int companyId)
+        {
+            return Ok(_companyService.GetKeywordsForCompany(companyId));
+        }
     }
 }

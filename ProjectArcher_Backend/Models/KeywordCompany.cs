@@ -5,7 +5,6 @@ namespace ProjectArcher_Backend.Models
 {
     public partial class KeywordCompany
     {
-        public long Id { get; set; }
         public long KeywordId { get; set; }
         public long CompanyId { get; set; }
 

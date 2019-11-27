@@ -57,7 +57,7 @@ namespace ProjectArcher_Backend.Services
             return _context.Keyword.Where(keyword => keywordContacts.Contains(keyword.Id)).ToList();
         }
 
-        public KeywordContact AddKeywordToContacty(KeywordContact keyword)
+        public KeywordContact AddKeywordToContact(KeywordContact keyword)
         {
             var keywordContact = _context.KeywordContact.Add(keyword).Entity;
             _context.SaveChanges();

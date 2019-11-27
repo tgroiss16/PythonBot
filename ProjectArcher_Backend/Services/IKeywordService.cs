@@ -12,5 +12,6 @@ namespace ProjectArcher_Backend.Services
         Keyword AddKeyword(Keyword keyword);
         Keyword UpdateKeyword(Keyword keyword);
         Keyword GetKeyword(int id);
+        List<Keyword> GetAllKeywords();
     }
 }

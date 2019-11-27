@@ -29,6 +29,13 @@ namespace ProjectArcher_Backend.Services
             return keywordToReturn;
         }
 
+        public List<Keyword> GetAllKeywords()
+        {
+            var keywords = _context.Keyword.OrderBy(keyword => keyword.Id).ToList();
+            _context.SaveChanges();
+            return keywords;
+        }
+
         public Keyword GetKeyword(int id)
         {
             var keywordToReturn = _context.Keyword.Where(keyword => keyword.Id == id).Single();
