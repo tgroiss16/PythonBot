@@ -1,16 +1,19 @@
-FROM microsoft/dotnet:2.2-sdk AS build-env
-WORKDIR /app
+FROM microsoft/dotnet:2.2-sdk as build
 
-# Copy csproj and restore as distinct layers
-COPY *.csproj ./
-RUN dotnet restore
+ARG BUILDCONFIG=RELEASE
+ARG VERSION=1.0.0
 
-# Copy everything else and build
-COPY . ./
-RUN dotnet publish -c Release -o out
+COPY ProjectArcher_Backend.csproj /build/
 
-# Build runtime image
+RUN dotnet restore ./build/ProjectArcher_Backend.csproj 
+
+COPY . ./build/
+WORKDIR /build/
+RUN dotnet publish ./ProjectArcher_Backend.csproj  -c $BUILDCONFIG -o out /p:Version=$VERSION
+
 FROM microsoft/dotnet:2.2-aspnetcore-runtime
 WORKDIR /app
-COPY --from=build-env /app/out .
-CMD dotnet ProjectArcher_Backend.dll
+
+COPY --from=build /build/out .
+
+ENTRYPOINT ["dotnet", "ProjectArcher_Backend.dll"]

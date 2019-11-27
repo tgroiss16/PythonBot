@@ -1,0 +1,14 @@
+version: '3.5'
+
+networks:
+  localdev:
+    name: localdev
+
+services:
+  main-api:
+    build: ProjectArcher_Backend
+    restart: always
+    ports:
+      - "8080:80"
+    networks:
+      - localdev
