@@ -1,19 +1,16 @@
-FROM mcr.microsoft.com/dotnet/core/aspnet:2.2-stretch-slim AS base
+FROM microsoft/dotnet:2.2-sdk AS build-env
 WORKDIR /app
-EXPOSE 80
- 
-FROM mcr.microsoft.com/dotnet/core/sdk:2.2-stretch AS build
-WORKDIR /src
-COPY ["ProjectArcher_Backend.csproj", ""]
-RUN dotnet restore "ProjectArcher_Backend.csproj"
-COPY . .
-WORKDIR "/src/"
-RUN dotnet build "ProjectArcher_Backend.csproj" -c Release -o /app
- 
-FROM build AS publish
-RUN dotnet publish "ProjectArcher_Backend.csproj" -c Release -o /app
- 
-FROM base AS final
+
+# Copy csproj and restore as distinct layers
+COPY *.csproj ./
+RUN dotnet restore
+
+# Copy everything else and build
+COPY . ./
+RUN dotnet publish -c Release -o out
+
+# Build runtime image
+FROM microsoft/dotnet:2.2-aspnetcore-runtime
 WORKDIR /app
-COPY --from=publish /app .
-ENTRYPOINT ["dotnet", "ProjectArcher_Backend.dll"]
+COPY --from=build-env /app/out .
+CMD dotnet ProjectArcher_Backend.dll
