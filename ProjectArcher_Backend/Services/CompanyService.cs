@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using System.Threading.Tasks;
+using ProjectArcher_Backend.Helpers;
 using ProjectArcher_Backend.Models;
 
 namespace ProjectArcher_Backend.Services {
@@ -42,45 +43,7 @@ namespace ProjectArcher_Backend.Services {
             return companyToReturn;
         }
 
-        public List<Company> FilterCompanys(long? id, bool? isActive, string city, string postalCode, string street,
-            string phoneNumberMobile, string phoneNumberLandline, string email, string website, string note, long? internalContact,
-            long? externalContact, string name) {
-            city = city ?? string.Empty;
-            postalCode = postalCode ?? string.Empty;
-            street = street ?? string.Empty;
-            phoneNumberMobile = phoneNumberMobile ?? string.Empty;
-            phoneNumberLandline = phoneNumberLandline ?? string.Empty;
-            email = email ?? string.Empty;
-            website = website ?? string.Empty;
-            note = note ?? string.Empty;
-            name = name ?? string.Empty;
-
-            var filtered = _context.Company.ToList().Where(c => c.City.Contains(city)
-                && c.PostalCode.Contains(postalCode)
-                && c.Street.Contains(street)
-                && c.PhoneNumberMobile.Contains(phoneNumberMobile)
-                && c.PhoneNumberLandline.Contains(phoneNumberLandline)
-                && c.Email.Contains(email)
-                && c.Website.Contains(website)
-                && c.Note.Contains(note)
-                && c.Name.Contains(name));
-
-            if (id != null) {
-                filtered = filtered.Where(c => c.Id == id);
-            }
-            if (isActive != null) {
-                filtered = filtered.Where(c => c.IsActive == isActive);
-            }
-            if (internalContact != null) {
-                filtered = filtered.Where(c => c.InternalContact == internalContact);
-            }
-            if (externalContact != null) {
-                filtered = filtered.Where(c => c.ExternalContact == externalContact);
-            }
-            return filtered.ToList();
-        }
-
-        public List<Company> FilterAllProperties(string term) {
+        public List<Company> FilterAll(string term) {
             return _context.Company.Where(c => containsTerm(c, term)).ToList();
         }
 
@@ -91,6 +54,12 @@ namespace ProjectArcher_Backend.Services {
             return allProps.Any(p => p.GetValue(c, null)
                         .ToString()
                         .Contains(term));
+        }
+
+        public List<Company> FilterByProperty(List<ExpressionFilter> filters) {
+            var expressionTree = ExpressionBuilderHelper.ConstructAndExpressionTree<Company>(filters);
+            var anonymousFunc = expressionTree.Compile();
+            return _context.Company.Where(anonymousFunc).ToList();
         }
     }
 }
