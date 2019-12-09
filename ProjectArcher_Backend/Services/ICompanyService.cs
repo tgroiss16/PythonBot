@@ -1,4 +1,5 @@
-﻿using ProjectArcher_Backend.Models;
+﻿using ProjectArcher_Backend.Helpers;
+using ProjectArcher_Backend.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -13,5 +14,7 @@ namespace ProjectArcher_Backend.Services
         Company UpdateCompany(Company company);
         Company DeleteCompany(int id);
         Company GetCompany(int id);
+        List<Company> FilterAll(string term);
+        List<Company> FilterByProperty(List<ExpressionFilter> filters);
     }
 }
