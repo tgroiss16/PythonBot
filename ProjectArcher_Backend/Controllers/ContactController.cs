@@ -48,5 +48,23 @@ namespace ProjectArcher_Backend.Controllers
         {
             return Ok(_contactService.AddContact(contact));
         }
+
+        [HttpPost("keyword")]
+        public ActionResult<KeywordContact> AddContactKeyword([FromBody] KeywordContact keyword)
+        {
+            return Ok(_contactService.AddKeywordToContact(keyword));
+        }
+
+        [HttpDelete("keyword")]
+        public ActionResult<KeywordContact> DeleteKeywordFromContact([FromBody] KeywordContact keyword)
+        {
+            return Ok(_contactService.DeleteKeywordFromContact(keyword));
+        }
+
+        [HttpGet("keyword/{id}")]
+        public ActionResult<List<Keyword>> GetKeywordsForContact(int contactId)
+        {
+            return Ok(_contactService.GetKeywordsForContact(contactId));
+        }
     }
 }

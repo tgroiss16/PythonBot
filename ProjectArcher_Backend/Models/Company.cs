@@ -8,6 +8,7 @@ namespace ProjectArcher_Backend.Models
         public Company()
         {
             Contact = new HashSet<Contact>();
+            KeywordCompany = new HashSet<KeywordCompany>();
             TimelineCompany = new HashSet<TimelineCompany>();
         }
 
@@ -27,6 +28,7 @@ namespace ProjectArcher_Backend.Models
         public string Name { get; set; }
 
         public virtual ICollection<Contact> Contact { get; set; }
+        public virtual ICollection<KeywordCompany> KeywordCompany { get; set; }
         public virtual ICollection<TimelineCompany> TimelineCompany { get; set; }
     }
 }

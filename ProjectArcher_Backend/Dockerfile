@@ -1,19 +1,19 @@
-FROM mcr.microsoft.com/dotnet/core/aspnet:2.2-stretch-slim AS base
+FROM microsoft/dotnet:2.2-sdk as build
+
+ARG BUILDCONFIG=RELEASE
+ARG VERSION=1.0.0
+
+COPY ProjectArcher_Backend.csproj /build/
+
+RUN dotnet restore ./build/ProjectArcher_Backend.csproj 
+
+COPY . ./build/
+WORKDIR /build/
+RUN dotnet publish ./ProjectArcher_Backend.csproj  -c $BUILDCONFIG -o out /p:Version=$VERSION
+
+FROM microsoft/dotnet:2.2-aspnetcore-runtime
 WORKDIR /app
-EXPOSE 80
- 
-FROM mcr.microsoft.com/dotnet/core/sdk:2.2-stretch AS build
-WORKDIR /src
-COPY ["ProjectArcher_Backend.csproj", ""]
-RUN dotnet restore "ProjectArcher_Backend.csproj"
-COPY . .
-WORKDIR "/src/"
-RUN dotnet build "ProjectArcher_Backend.csproj" -c Release -o /app
- 
-FROM build AS publish
-RUN dotnet publish "ProjectArcher_Backend.csproj" -c Release -o /app
- 
-FROM base AS final
-WORKDIR /app
-COPY --from=publish /app .
+
+COPY --from=build /build/out .
+
 ENTRYPOINT ["dotnet", "ProjectArcher_Backend.dll"]

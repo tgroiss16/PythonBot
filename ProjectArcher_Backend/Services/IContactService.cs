@@ -13,5 +13,8 @@ namespace ProjectArcher_Backend.Services
         Contact UpdateContact(Contact contact);
         Contact DeleteContact(int id);
         Contact GetContact(int id);
+        List<Keyword> GetKeywordsForContact(int contactId);
+        KeywordContact AddKeywordToContact(KeywordContact keyword);
+        KeywordContact DeleteKeywordFromContact(KeywordContact keyword);
     }
 }

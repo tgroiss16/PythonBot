@@ -17,6 +17,9 @@ namespace ProjectArcher_Backend.Models
 
         public virtual DbSet<Company> Company { get; set; }
         public virtual DbSet<Contact> Contact { get; set; }
+        public virtual DbSet<Keyword> Keyword { get; set; }
+        public virtual DbSet<KeywordCompany> KeywordCompany { get; set; }
+        public virtual DbSet<KeywordContact> KeywordContact { get; set; }
         public virtual DbSet<TimelineCompany> TimelineCompany { get; set; }
         public virtual DbSet<TimelineContact> TimelineContact { get; set; }
 
@@ -124,6 +127,63 @@ namespace ProjectArcher_Backend.Models
                     .HasForeignKey(d => d.CompanyId)
                     .OnDelete(DeleteBehavior.ClientSetNull)
                     .HasConstraintName("fkey_companyId");
+            });
+
+            modelBuilder.Entity<Keyword>(entity =>
+            {
+                entity.Property(e => e.Id).HasColumnName("id");
+
+                entity.Property(e => e.Keyword1)
+                    .IsRequired()
+                    .HasColumnName("keyword");
+            });
+
+            modelBuilder.Entity<KeywordCompany>(entity =>
+            {
+                entity.HasKey(e => new { e.KeywordId, e.CompanyId })
+                    .HasName("Keyword_Company_pkey");
+
+                entity.ToTable("Keyword_Company");
+
+                entity.Property(e => e.KeywordId).HasColumnName("keyword_id");
+
+                entity.Property(e => e.CompanyId).HasColumnName("company_id");
+
+                entity.HasOne(d => d.Company)
+                    .WithMany(p => p.KeywordCompany)
+                    .HasForeignKey(d => d.CompanyId)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("Keyword_Company_company_id_fkey");
+
+                entity.HasOne(d => d.Keyword)
+                    .WithMany(p => p.KeywordCompany)
+                    .HasForeignKey(d => d.KeywordId)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("Keyword_Company_keyword_id_fkey");
+            });
+
+            modelBuilder.Entity<KeywordContact>(entity =>
+            {
+                entity.HasKey(e => new { e.KeywordId, e.ContactId })
+                    .HasName("Keyword_Contact_pkey");
+
+                entity.ToTable("Keyword_Contact");
+
+                entity.Property(e => e.KeywordId).HasColumnName("keyword_id");
+
+                entity.Property(e => e.ContactId).HasColumnName("contact_id");
+
+                entity.HasOne(d => d.Contact)
+                    .WithMany(p => p.KeywordContact)
+                    .HasForeignKey(d => d.ContactId)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("Keyword_Contact_contact_id_fkey");
+
+                entity.HasOne(d => d.Keyword)
+                    .WithMany(p => p.KeywordContact)
+                    .HasForeignKey(d => d.KeywordId)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("Keyword_Contact_keyword_id_fkey");
             });
 
             modelBuilder.Entity<TimelineCompany>(entity =>

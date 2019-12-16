@@ -16,5 +16,8 @@ namespace ProjectArcher_Backend.Services
         Company GetCompany(int id);
         List<Company> FilterAll(string term);
         List<Company> FilterByProperty(List<ExpressionFilter> filters);
+        List<Keyword> GetKeywordsForCompany(int companyId);
+        KeywordCompany AddKeywordToCompany(KeywordCompany keyword);
+        KeywordCompany DeleteKeywordFromCompany(KeywordCompany keyword);
     }
 }
