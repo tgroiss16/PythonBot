@@ -44,10 +44,10 @@ namespace ProjectArcher_Backend.Services {
         }
 
         public List<Company> FilterAll(string term) {
-            return _context.Company.Where(c => containsTerm(c, term)).ToList();
+            return _context.Company.Where(c => ContainsTerm(c, term)).ToList();
         }
 
-        private bool containsTerm(Company c, string term) {
+        private bool ContainsTerm(Company c, string term) {
             var allProps = c.GetType()
                 .GetProperties()
                 .ToList();
@@ -56,10 +56,13 @@ namespace ProjectArcher_Backend.Services {
                         .Contains(term));
         }
 
-        public List<Company> FilterByProperty(List<ExpressionFilter> filters) {
+        public List<Company> FilterByProperty(List<ExpressionFilter> filters)
+        {
             var expressionTree = ExpressionBuilderHelper.ConstructAndExpressionTree<Company>(filters);
             var anonymousFunc = expressionTree.Compile();
             return _context.Company.Where(anonymousFunc).ToList();
+        }
+    
         public List<Keyword> GetKeywordsForCompany(int companyId)
         {
             var keywordCompanies = _context.KeywordCompany.Where(keyword => keyword.CompanyId == companyId)
