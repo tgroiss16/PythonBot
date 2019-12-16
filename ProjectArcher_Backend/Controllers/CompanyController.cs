@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using ProjectArcher_Backend.Helpers;
 using ProjectArcher_Backend.Models;
 using ProjectArcher_Backend.Services;
 
@@ -24,6 +25,17 @@ namespace ProjectArcher_Backend.Controllers
         {
             return Ok(_companyService.GetCompanys());
         }
+
+        [HttpGet("filter/{all}")]
+        public ActionResult<List<Company>> FilterAll(string term) {
+            return Ok(_companyService.FilterAll(term));
+        }
+
+        [HttpGet("filter")]
+        public ActionResult<List<Company>> FilterByProperty([FromBody] List<ExpressionFilter> filters) {
+            return Ok(_companyService.FilterByProperty(filters));
+        }
+
 
         [HttpGet("{id}")]
         public ActionResult<Company> GetCompanyPerId(int id)
