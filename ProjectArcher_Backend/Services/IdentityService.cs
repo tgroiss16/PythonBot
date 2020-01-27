@@ -44,6 +44,9 @@ namespace ProjectArcher_Backend.Services
             string hashValue = Convert.ToBase64String(hashWithSaltBytes);
             string salt = Convert.ToBase64String(saltBytes);
 
+            rng.Dispose();
+            hash.Dispose();
+
             return (hashValue, salt);
         }
 
