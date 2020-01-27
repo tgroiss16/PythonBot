@@ -69,7 +69,6 @@ namespace ProjectArcher_Backend.Services
             }
             File.WriteAllLines(filename, sContacts);
         }
-
         private string ToContactCsvString(Contact contact)
         {
             return $"{contact.FirstName};{contact.LastName};{contact.TitlePrefix};{contact.TitlePostfix};{contact.Gender};{contact.Position};{contact.Company.Name};{contact.IsActive};{contact.PhoneNumberMobile};{contact.PhoneNumberLandline};{contact.Email};{contact.Note};{contact.Source};{contact.InternalContact}";
@@ -232,5 +231,7 @@ namespace ProjectArcher_Backend.Services
         }
 
         #endregion import
+
     }
 }
+

@@ -5,10 +5,13 @@ using System.Linq;
 using System.Threading.Tasks;
 using ProjectArcher_Backend.Models;
 
-namespace ProjectArcher_Backend.Services {
-    public class CompanyService : ICompanyService {
+namespace ProjectArcher_Backend.Services
+{
+    public class CompanyService : ICompanyService
+    {
         private readonly postgresContext _context;
-        public CompanyService(postgresContext context) {
+        public CompanyService(postgresContext context)
+        {
             _context = context;
         }
 
@@ -85,7 +88,6 @@ namespace ProjectArcher_Backend.Services {
         {
             string[] arr = item.Split(';');
             Company c = new Company();
-            string s = arr[0];
             c.Id = int.Parse(arr[0]);
             c.IsActive = bool.Parse(arr[1]);
             c.City = arr[2];
