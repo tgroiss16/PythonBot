@@ -23,7 +23,9 @@ namespace ProjectArcher_Backend.Controllers
         [HttpGet]
         public ActionResult<List<ContactDTO>> GetAllContacts()
         {
-            return Ok(_contactService.GetContacts().Select(x => ContactDTO.Of(x)));
+            var contacts = _contactService.GetContacts();
+            var dtos = contacts.Select(x => ContactDTO.Of(x)).ToList();
+            return Ok(dtos);
         }
 
         [HttpGet("{id}")]
