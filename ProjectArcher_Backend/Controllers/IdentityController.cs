@@ -19,13 +19,13 @@ namespace ProjectArcher_Backend.Controllers
             _identityService = identityService;
         }
 
-        [HttpGet]
+        [HttpGet("login")]
         public ActionResult<bool> Login([FromBody] UserDTO user)
         {
             return Ok(_identityService.Login(user.Username, user.PlainTextPassword));
         }
 
-        [HttpGet]
+        [HttpGet("register")]
         public ActionResult<bool> Register([FromBody] UserDTO user)
         {
             return Ok(_identityService.Register(user.Username, user.PlainTextPassword));
