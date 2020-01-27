@@ -1,4 +1,5 @@
-﻿using ProjectArcher_Backend.Helpers;
+﻿using ProjectArcher_Backend.DTOs;
+using ProjectArcher_Backend.Helpers;
 using ProjectArcher_Backend.Models;
 using System;
 using System.Collections.Generic;
@@ -19,5 +20,8 @@ namespace ProjectArcher_Backend.Services
         List<Keyword> GetKeywordsForCompany(int companyId);
         KeywordCompany AddKeywordToCompany(KeywordCompany keyword);
         KeywordCompany DeleteKeywordFromCompany(KeywordCompany keyword);
+        List<Timeline> GetTimelineObjectsForCompany(int companyId);
+        TimelineCompany AddTimelineObjectToCompany(TimelineCompany timeline);
+        TimelineCompany DeleteTimelineFromCompany(TimelineCompany timeline);
     }
 }

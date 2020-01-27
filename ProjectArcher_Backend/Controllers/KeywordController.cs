@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using ProjectArcher_Backend.DTOs;
 using ProjectArcher_Backend.Models;
 using ProjectArcher_Backend.Services;
 
@@ -20,33 +21,33 @@ namespace ProjectArcher_Backend.Controllers
         }
 
         [HttpGet]
-        public ActionResult<List<Keyword>> GetAllKeywords()
+        public ActionResult<List<KeywordDTO>> GetAllKeywords()
         {
-            return Ok(_keywordService.GetAllKeywords());
+            return Ok(_keywordService.GetAllKeywords().Select(keyword => KeywordDTO.Of(keyword)).ToList());
         }
 
         [HttpGet("{id}")]
-        public ActionResult<Keyword> GetKeyword(int id)
+        public ActionResult<KeywordDTO> GetKeyword(int id)
         {
-            return Ok(_keywordService.GetKeyword(id));
+            return Ok(KeywordDTO.Of(_keywordService.GetKeyword(id)));
         }
 
         [HttpDelete("{id}")]
-        public ActionResult<Keyword> DeleteKeyword(int id)
+        public ActionResult<KeywordDTO> DeleteKeyword(int id)
         {
-            return Ok(_keywordService.DeleteKeyword(id));
+            return Ok(KeywordDTO.Of(_keywordService.DeleteKeyword(id)));
         }
 
         [HttpPost]
-        public ActionResult<Keyword> AddKeyword([FromBody] Keyword keyword)
+        public ActionResult<KeywordDTO> AddKeyword([FromBody] Keyword keyword)
         {
-            return Ok(_keywordService.AddKeyword(keyword));
+            return Ok(KeywordDTO.Of(_keywordService.AddKeyword(keyword)));
         }
 
         [HttpPut]
-        public ActionResult<Keyword> UpdateKeyword([FromBody] Keyword keyword)
+        public ActionResult<KeywordDTO> UpdateKeyword([FromBody] Keyword keyword)
         {
-            return Ok(_keywordService.UpdateKeyword(keyword));
+            return Ok(KeywordDTO.Of(_keywordService.UpdateKeyword(keyword)));
         }
     }
 }

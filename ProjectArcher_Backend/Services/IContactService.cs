@@ -1,4 +1,5 @@
-﻿using ProjectArcher_Backend.Models;
+﻿using ProjectArcher_Backend.DTOs;
+using ProjectArcher_Backend.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -16,5 +17,8 @@ namespace ProjectArcher_Backend.Services
         List<Keyword> GetKeywordsForContact(int contactId);
         KeywordContact AddKeywordToContact(KeywordContact keyword);
         KeywordContact DeleteKeywordFromContact(KeywordContact keyword);
+        List<Timeline> GetTimelineObjectsForContact(int contactId);
+        TimelineContact AddTimelineObjectToContact(TimelineContact timeline);
+        TimelineContact DeleteTimelineFromContact(TimelineContact timeline);
     }
 }
