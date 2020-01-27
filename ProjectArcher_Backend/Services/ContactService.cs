@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
+using ProjectArcher_Backend.DTOs;
 using ProjectArcher_Backend.Models;
 
 namespace ProjectArcher_Backend.Services
@@ -70,6 +71,28 @@ namespace ProjectArcher_Backend.Services
             var keywordContact = _context.KeywordContact.Remove(keyword).Entity;
             _context.SaveChanges();
             return keywordContact;
+        }
+
+        public List<Timeline> GetTimelineObjectsForContact(int contactId)
+        {
+            var timelines = _context.TimelineContact.Where(timeline => timeline.ContactId == contactId)
+                .Select(timelineContact => timelineContact.TimelineId)
+                .ToList();
+            return _context.Timeline.Where(timeline => timelines.Contains(timeline.Id)).ToList();
+        }
+
+        public TimelineContact AddTimelineObjectToContact(TimelineContact timeline)
+        {
+            var timelineContact = _context.TimelineContact.Add(timeline).Entity;
+            _context.SaveChanges();
+            return timelineContact;
+        }
+
+        public TimelineContact DeleteTimelineFromContact(TimelineContact timeline)
+        {
+            var timelineContact = _context.TimelineContact.Remove(timeline).Entity;
+            _context.SaveChanges();
+            return timelineContact;
         }
     }
 }

@@ -9,14 +9,14 @@ namespace ProjectArcher_Backend.DTOs
     public class KeywordDTO
     {
         public long Id { get; set; }
-        public string Keyword1 { get; set; }
+        public string Name { get; set; }
 
         public static KeywordDTO Of(Keyword keyword)
         {
             return new KeywordDTO
             {
                 Id = keyword.Id,
-                Keyword1 = keyword.Keyword1
+                Name = keyword.Name
             };
         }
     }

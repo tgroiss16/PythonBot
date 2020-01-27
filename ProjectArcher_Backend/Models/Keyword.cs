@@ -12,7 +12,7 @@ namespace ProjectArcher_Backend.Models
         }
 
         public long Id { get; set; }
-        public string Keyword1 { get; set; }
+        public string Name { get; set; }
 
         public virtual ICollection<KeywordCompany> KeywordCompany { get; set; }
         public virtual ICollection<KeywordContact> KeywordContact { get; set; }

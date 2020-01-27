@@ -8,25 +8,15 @@ namespace ProjectArcher_Backend.DTOs
 {
     public class TimelineContactDTO
     {
-        public long Id { get; set; }
+        public long TimelineId { get; set; }
         public long ContactId { get; set; }
-        public string Title { get; set; }
-        public string Note { get; set; }
-        public byte[] Attachment { get; set; }
-        public string FileName { get; set; }
-        public DateTime Timestamp { get; set; }
 
         public static TimelineContactDTO Of(TimelineContact timeline)
         {
             return new TimelineContactDTO
             {
-                Id = timeline.Id,
+                TimelineId = timeline.TimelineId,
                 ContactId = timeline.ContactId,
-                Title = timeline.Title,
-                Note = timeline.Note,
-                Attachment = timeline.Attachment,
-                FileName = timeline.FileName,
-                Timestamp = timeline.Timestamp
             };
         }
     }
