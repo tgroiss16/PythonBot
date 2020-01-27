@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using ProjectArcher_Backend.DTOs;
 using ProjectArcher_Backend.Models;
 using ProjectArcher_Backend.Services;
 
@@ -20,33 +21,69 @@ namespace ProjectArcher_Backend.Controllers
         }
 
         [HttpGet]
-        public ActionResult<List<Contact>> GetAllContacts()
+        public ActionResult<List<ContactDTO>> GetAllContacts()
         {
-            return Ok(_contactService.GetContacts());
+            return Ok(_contactService.GetContacts().Select(x => ContactDTO.Of(x)));
         }
 
         [HttpGet("{id}")]
-        public ActionResult<Contact> GetContactPerId(int id)
+        public ActionResult<ContactDTO> GetContactPerId(int id)
         {
-            return Ok(_contactService.GetContact(id));
+            return Ok(ContactDTO.Of(_contactService.GetContact(id)));
         }
 
         [HttpDelete("{id}")]
-        public ActionResult<Contact> DeleteContact(int id)
+        public ActionResult<ContactDTO> DeleteContact(int id)
         {
-            return Ok(_contactService.DeleteContact(id));
+            return Ok(ContactDTO.Of(_contactService.DeleteContact(id)));
         }
 
         [HttpPut]
-        public ActionResult<Contact> UpdateContact([FromBody] Contact contact)
+        public ActionResult<ContactDTO> UpdateContact([FromBody] Contact contact)
         {
-            return Ok(_contactService.UpdateContact(contact));
+            return Ok(ContactDTO.Of(_contactService.UpdateContact(contact)));
         }
 
         [HttpPost]
-        public ActionResult<Contact> AddContact([FromBody] Contact contact)
+        public ActionResult<ContactDTO> AddContact([FromBody] Contact contact)
         {
-            return Ok(_contactService.AddContact(contact));
+            return Ok(ContactDTO.Of(_contactService.AddContact(contact)));
+        }
+
+        [HttpPost("keyword")]
+        public ActionResult<KeywordContactDTO> AddContactKeyword([FromBody] KeywordContact keyword)
+        {
+            return Ok(KeywordContactDTO.Of(_contactService.AddKeywordToContact(keyword)));
+        }
+
+        [HttpDelete("keyword")]
+        public ActionResult<KeywordContactDTO> DeleteKeywordFromContact([FromBody] KeywordContact keyword)
+        {
+            return Ok(KeywordContactDTO.Of(_contactService.DeleteKeywordFromContact(keyword)));
+        }
+
+        [HttpGet("keyword/{id}")]
+        public ActionResult<List<KeywordDTO>> GetKeywordsForContact(int contactId)
+        {
+            return Ok(_contactService.GetKeywordsForContact(contactId).Select(x => KeywordDTO.Of(x)));
+        }
+
+        [HttpPost("timeline")]
+        public ActionResult<TimelineContactDTO> AddTimelineObjectToContact([FromBody] TimelineContact keyword)
+        {
+            return Ok(TimelineContactDTO.Of(_contactService.AddTimelineObjectToContact(keyword)));
+        }
+
+        [HttpDelete("timeline")]
+        public ActionResult<TimelineContactDTO> DeleteTimelineFromCompany([FromBody] TimelineContact keyword)
+        {
+            return Ok(TimelineContactDTO.Of(_contactService.DeleteTimelineFromContact(keyword)));
+        }
+
+        [HttpGet("timeline/{id}")]
+        public ActionResult<List<TimelineDTO>> DeleteTimelineFromContact(int contactId)
+        {
+            return Ok(_contactService.GetTimelineObjectsForContact(contactId).Select(x => TimelineDTO.Of(x)).ToList());
         }
     }
 }

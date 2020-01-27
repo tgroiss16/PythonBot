@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
+using ProjectArcher_Backend.DTOs;
 using ProjectArcher_Backend.Models;
 
 namespace ProjectArcher_Backend.Services
@@ -50,27 +51,48 @@ namespace ProjectArcher_Backend.Services
             return contactToReturn;
         }
 
-        public void ContactToCsv(Contact c, string filename)
+        public List<Keyword> GetKeywordsForContact(int contactId)
         {
-            ContactToCsv(new Contact[] { c },filename);
+            var keywordContacts = _context.KeywordContact.Where(keyword => keyword.ContactId == contactId)
+                .Select(keywordCompany => keywordCompany.KeywordId)
+                .ToList();
+            return _context.Keyword.Where(keyword => keywordContacts.Contains(keyword.Id)).ToList();
         }
 
-        public void ContactToCsv(Contact[] contacts, string filename)
+        public KeywordContact AddKeywordToContact(KeywordContact keyword)
         {
-
-            string firstLine = "Vorname;Nachname;Titel Vorgestellt;Titel nachgestellt;Geschlecht;Position in der Firma;Unternehmen;Aktiv/Inaktiv;Telefon Mobil;TelefonFestnetz;email;Kontaktnotizen;Quelle;interner Kontakt";
-            List<string> sContacts = new List<string>();
-            sContacts.Add(firstLine);
-            foreach (Contact contact in contacts)
-            {
-                sContacts.Add(ToCsvString(contact));
-            }
-            File.WriteAllLines(filename, sContacts);
+            var keywordContact = _context.KeywordContact.Add(keyword).Entity;
+            _context.SaveChanges();
+            return keywordContact;
         }
 
-        private string ToCsvString(Contact contact)
+        public KeywordContact DeleteKeywordFromContact(KeywordContact keyword)
         {
-            return $"{contact.FirstName};{contact.LastName};{contact.TitlePrefix};{contact.TitlePostfix};{contact.Gender};{contact.Position};{contact.Company};{contact.IsActive};{contact.PhoneNumberMobile};{contact.PhoneNumberLandline};{contact.Email};{contact.Note};{contact.Source};{contact.InternalContact}";
+            var keywordContact = _context.KeywordContact.Remove(keyword).Entity;
+            _context.SaveChanges();
+            return keywordContact;
+        }
+
+        public List<Timeline> GetTimelineObjectsForContact(int contactId)
+        {
+            var timelines = _context.TimelineContact.Where(timeline => timeline.ContactId == contactId)
+                .Select(timelineContact => timelineContact.TimelineId)
+                .ToList();
+            return _context.Timeline.Where(timeline => timelines.Contains(timeline.Id)).ToList();
+        }
+
+        public TimelineContact AddTimelineObjectToContact(TimelineContact timeline)
+        {
+            var timelineContact = _context.TimelineContact.Add(timeline).Entity;
+            _context.SaveChanges();
+            return timelineContact;
+        }
+
+        public TimelineContact DeleteTimelineFromContact(TimelineContact timeline)
+        {
+            var timelineContact = _context.TimelineContact.Remove(timeline).Entity;
+            _context.SaveChanges();
+            return timelineContact;
         }
     }
 }

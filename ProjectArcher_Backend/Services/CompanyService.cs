@@ -3,11 +3,13 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using System.Threading.Tasks;
+using ProjectArcher_Backend.DTOs;
 using ProjectArcher_Backend.Helpers;
 using ProjectArcher_Backend.Models;
 
 namespace ProjectArcher_Backend.Services {
     public class CompanyService : ICompanyService {
+        
         private readonly postgresContext _context;
         public CompanyService(postgresContext context) {
             _context = context;
@@ -44,10 +46,10 @@ namespace ProjectArcher_Backend.Services {
         }
 
         public List<Company> FilterAll(string term) {
-            return _context.Company.Where(c => containsTerm(c, term)).ToList();
+            return _context.Company.Where(c => ContainsTerm(c, term)).ToList();
         }
 
-        private bool containsTerm(Company c, string term) {
+        private bool ContainsTerm(Company c, string term) {
             var allProps = c.GetType()
                 .GetProperties()
                 .ToList();
@@ -56,10 +58,56 @@ namespace ProjectArcher_Backend.Services {
                         .Contains(term));
         }
 
-        public List<Company> FilterByProperty(List<ExpressionFilter> filters) {
+        public List<Company> FilterByProperty(List<ExpressionFilter> filters)
+        {
             var expressionTree = ExpressionBuilderHelper.ConstructAndExpressionTree<Company>(filters);
             var anonymousFunc = expressionTree.Compile();
             return _context.Company.Where(anonymousFunc).ToList();
+        }
+    
+        public List<Keyword> GetKeywordsForCompany(int companyId)
+        {
+            var keywordCompanies = _context.KeywordCompany.Where(keyword => keyword.CompanyId == companyId)
+                .Select(keywordCompany => keywordCompany.KeywordId)
+                .ToList();
+            return _context.Keyword.Where(keyword => keywordCompanies.Contains(keyword.Id)).ToList();
+        }
+
+        public KeywordCompany AddKeywordToCompany(KeywordCompany keyword)
+        {
+            var keywordCompany = _context.KeywordCompany.Add(keyword).Entity;
+            _context.SaveChanges();
+            return keywordCompany;
+
+        }
+
+        public KeywordCompany DeleteKeywordFromCompany(KeywordCompany keyword)
+        {
+            var keywordCompany = _context.KeywordCompany.Remove(keyword).Entity;
+            _context.SaveChanges();
+            return keywordCompany;
+        }
+
+        public List<Timeline> GetTimelineObjectsForCompany(int companyId)
+        {
+            var timelines = _context.TimelineCompany.Where(timeline => timeline.CompanyId == companyId)
+                .Select(timelineContact => timelineContact.TimelineId)
+                .ToList();
+            return _context.Timeline.Where(timeline => timelines.Contains(timeline.Id)).ToList();
+        }
+
+        public TimelineCompany AddTimelineObjectToCompany(TimelineCompany timeline)
+        {
+            var timelineCompany = _context.TimelineCompany.Add(timeline).Entity;
+            _context.SaveChanges();
+            return timelineCompany;
+        }
+
+        public TimelineCompany DeleteTimelineFromCompany(TimelineCompany timeline)
+        {
+            var timelineCompany = _context.TimelineCompany.Remove(timeline).Entity;
+            _context.SaveChanges();
+            return timelineCompany;
         }
     }
 }

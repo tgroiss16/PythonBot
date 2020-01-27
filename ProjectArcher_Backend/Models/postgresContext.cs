@@ -17,9 +17,13 @@ namespace ProjectArcher_Backend.Models
 
         public virtual DbSet<Company> Company { get; set; }
         public virtual DbSet<Contact> Contact { get; set; }
+        public virtual DbSet<Keyword> Keyword { get; set; }
+        public virtual DbSet<KeywordCompany> KeywordCompany { get; set; }
+        public virtual DbSet<KeywordContact> KeywordContact { get; set; }
+        public virtual DbSet<Timeline> Timeline { get; set; }
         public virtual DbSet<TimelineCompany> TimelineCompany { get; set; }
         public virtual DbSet<TimelineContact> TimelineContact { get; set; }
-
+        public virtual DbSet<User> User { get; set; }
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.HasAnnotation("ProductVersion", "2.2.6-servicing-10079");
@@ -126,15 +130,68 @@ namespace ProjectArcher_Backend.Models
                     .HasConstraintName("fkey_companyId");
             });
 
-            modelBuilder.Entity<TimelineCompany>(entity =>
+            modelBuilder.Entity<Keyword>(entity =>
             {
-                entity.ToTable("Timeline_Company");
+                entity.Property(e => e.Id).HasColumnName("id");
 
+                entity.Property(e => e.Name)
+                    .IsRequired()
+                    .HasColumnName("name");
+            });
+
+            modelBuilder.Entity<KeywordCompany>(entity =>
+            {
+                entity.HasKey(e => new { e.KeywordId, e.CompanyId })
+                    .HasName("Keyword_Company_pkey");
+
+                entity.ToTable("Keyword_Company");
+
+                entity.Property(e => e.KeywordId).HasColumnName("keyword_id");
+
+                entity.Property(e => e.CompanyId).HasColumnName("company_id");
+
+                entity.HasOne(d => d.Company)
+                    .WithMany(p => p.KeywordCompany)
+                    .HasForeignKey(d => d.CompanyId)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("Keyword_Company_company_id_fkey");
+
+                entity.HasOne(d => d.Keyword)
+                    .WithMany(p => p.KeywordCompany)
+                    .HasForeignKey(d => d.KeywordId)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("Keyword_Company_keyword_id_fkey");
+            });
+
+            modelBuilder.Entity<KeywordContact>(entity =>
+            {
+                entity.HasKey(e => new { e.KeywordId, e.ContactId })
+                    .HasName("Keyword_Contact_pkey");
+
+                entity.ToTable("Keyword_Contact");
+
+                entity.Property(e => e.KeywordId).HasColumnName("keyword_id");
+
+                entity.Property(e => e.ContactId).HasColumnName("contact_id");
+
+                entity.HasOne(d => d.Contact)
+                    .WithMany(p => p.KeywordContact)
+                    .HasForeignKey(d => d.ContactId)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("Keyword_Contact_contact_id_fkey");
+
+                entity.HasOne(d => d.Keyword)
+                    .WithMany(p => p.KeywordContact)
+                    .HasForeignKey(d => d.KeywordId)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("Keyword_Contact_keyword_id_fkey");
+            });
+
+            modelBuilder.Entity<Timeline>(entity =>
+            {
                 entity.Property(e => e.Id).HasColumnName("id");
 
                 entity.Property(e => e.Attachment).HasColumnName("attachment");
-
-                entity.Property(e => e.CompanyId).HasColumnName("company_id");
 
                 entity.Property(e => e.FileName)
                     .HasColumnName("file_name")
@@ -144,59 +201,85 @@ namespace ProjectArcher_Backend.Models
 
                 entity.Property(e => e.Timestamp)
                     .HasColumnName("timestamp")
-                    .HasColumnType("timestamp(6) without time zone")
-                    .HasDefaultValueSql("CURRENT_TIMESTAMP");
+                    .HasColumnType("timestamp(6) without time zone");
 
                 entity.Property(e => e.Title)
                     .HasColumnName("title")
                     .HasMaxLength(250);
+            });
+
+            modelBuilder.Entity<TimelineCompany>(entity =>
+            {
+                entity.HasKey(e => e.TimelineId)
+                    .HasName("Timeline_Company_pkey");
+
+                entity.ToTable("Timeline_Company");
+
+                entity.Property(e => e.TimelineId)
+                    .HasColumnName("timeline_id")
+                    .ValueGeneratedNever();
+
+                entity.Property(e => e.CompanyId).HasColumnName("company_id");
 
                 entity.HasOne(d => d.Company)
                     .WithMany(p => p.TimelineCompany)
                     .HasForeignKey(d => d.CompanyId)
                     .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("fkCompanyIdId");
+                    .HasConstraintName("fk_com_tim_comId");
+
+                entity.HasOne(d => d.Timeline)
+                    .WithOne(p => p.TimelineCompany)
+                    .HasForeignKey<TimelineCompany>(d => d.TimelineId)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("fk_com_tim_timId");
             });
 
             modelBuilder.Entity<TimelineContact>(entity =>
             {
+                entity.HasKey(e => e.TimelineId)
+                    .HasName("Timeline_Contact_pkey");
+
                 entity.ToTable("Timeline_Contact");
 
-                entity.Property(e => e.Id).HasColumnName("id");
-
-                entity.Property(e => e.Attachment).HasColumnName("attachment");
+                entity.Property(e => e.TimelineId)
+                    .HasColumnName("timeline_id")
+                    .ValueGeneratedNever();
 
                 entity.Property(e => e.ContactId).HasColumnName("contact_id");
-
-                entity.Property(e => e.FileName)
-                    .HasColumnName("file_name")
-                    .HasMaxLength(250);
-
-                entity.Property(e => e.Note).HasColumnName("note");
-
-                entity.Property(e => e.Timestamp)
-                    .HasColumnName("timestamp")
-                    .HasColumnType("timestamp(6) without time zone")
-                    .HasDefaultValueSql("CURRENT_TIMESTAMP");
-
-                entity.Property(e => e.Title)
-                    .HasColumnName("title")
-                    .HasMaxLength(250);
 
                 entity.HasOne(d => d.Contact)
                     .WithMany(p => p.TimelineContact)
                     .HasForeignKey(d => d.ContactId)
                     .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("fkContactIdId");
+                    .HasConstraintName("fk_con_tim_conId");
+
+                entity.HasOne(d => d.Timeline)
+                    .WithOne(p => p.TimelineContact)
+                    .HasForeignKey<TimelineContact>(d => d.TimelineId)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("fk_con_tim_timId");
+            });
+
+            modelBuilder.Entity<User>(entity =>
+            {
+                entity.Property(e => e.Id).HasColumnName("id");
+
+                entity.Property(e => e.Password)
+                    .IsRequired()
+                    .HasColumnName("password");
+
+                entity.Property(e => e.Salt)
+                    .IsRequired()
+                    .HasColumnName("salt");
+
+                entity.Property(e => e.Username)
+                    .IsRequired()
+                    .HasColumnName("username");
             });
 
             modelBuilder.HasSequence("Company_id_seq");
 
             modelBuilder.HasSequence("Contact_id_seq");
-
-            modelBuilder.HasSequence("Timeline_Company_id_seq").HasMin(0);
-
-            modelBuilder.HasSequence("Timeline_Contact_id_seq").HasMin(0);
         }
     }
 }
