@@ -24,6 +24,11 @@ namespace ProjectArcher_Backend.Models
         public virtual DbSet<TimelineCompany> TimelineCompany { get; set; }
         public virtual DbSet<TimelineContact> TimelineContact { get; set; }
         public virtual DbSet<User> User { get; set; }
+
+        public virtual DbSet<MailingList> MailingList { get; set; }
+        public virtual DbSet<MailingCompany> MailingCompany { get; set; }
+        public virtual DbSet<MailingContact> MailingContact { get; set; }
+
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.HasAnnotation("ProductVersion", "2.2.6-servicing-10079");
