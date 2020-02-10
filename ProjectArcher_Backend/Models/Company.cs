@@ -9,6 +9,7 @@ namespace ProjectArcher_Backend.Models
         {
             Contact = new HashSet<Contact>();
             KeywordCompany = new HashSet<KeywordCompany>();
+            MailingCompany = new HashSet<MailingCompany>();
             TimelineCompany = new HashSet<TimelineCompany>();
         }
 
@@ -29,6 +30,7 @@ namespace ProjectArcher_Backend.Models
 
         public virtual ICollection<Contact> Contact { get; set; }
         public virtual ICollection<KeywordCompany> KeywordCompany { get; set; }
+        public virtual ICollection<MailingCompany> MailingCompany { get; set; }
         public virtual ICollection<TimelineCompany> TimelineCompany { get; set; }
     }
 }

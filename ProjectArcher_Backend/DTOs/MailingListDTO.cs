@@ -11,7 +11,7 @@ namespace ProjectArcher_Backend.DTOs {
 
         public string Name { get; set; }
 
-        public DateTime SendDate { get; set; }
+        public DateTime? SendDate { get; set; }
 
         public static MailingListDTO Of(MailingList mailingList)
         {
