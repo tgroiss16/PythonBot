@@ -23,11 +23,10 @@ namespace ProjectArcher_Backend.DTOs
         public string Note { get; set; }
         public string Source { get; set; }
         public long InternalContact { get; set; }
-        public string CompanyName { get; set; }
 
         public static ContactDTO Of (Contact contact)
         {
-            return new ContactDTO
+            return new ContactDTO()
             {
                 Id = contact.Id,
                 CompanyId = contact.CompanyId,
@@ -43,8 +42,7 @@ namespace ProjectArcher_Backend.DTOs
                 Email = contact.Email,
                 Note = contact.Note,
                 Source = contact.Source,
-                InternalContact = contact.InternalContact,
-                CompanyName = contact.Company.Name
+                InternalContact = contact.InternalContact
             };
         }
     }
