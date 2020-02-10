@@ -34,6 +34,7 @@ namespace ProjectArcher_Backend
             services.AddScoped<ITimelineService, TimelineService>();
             services.AddScoped<IKeywordService, KeywordService>();
             services.AddScoped<IIdentityService, IdentityService>();
+            services.AddScoped<IMailingListService, MailingListService>();
 
             services.AddCors(options => options.AddPolicy("CorsPolicy", builder =>
             {
