@@ -20,10 +20,15 @@ namespace ProjectArcher_Backend.Models
         public virtual DbSet<Keyword> Keyword { get; set; }
         public virtual DbSet<KeywordCompany> KeywordCompany { get; set; }
         public virtual DbSet<KeywordContact> KeywordContact { get; set; }
+        public virtual DbSet<MailingCompany> MailingCompany { get; set; }
+        public virtual DbSet<MailingContact> MailingContact { get; set; }
+        public virtual DbSet<MailingList> MailingList { get; set; }
         public virtual DbSet<Timeline> Timeline { get; set; }
         public virtual DbSet<TimelineCompany> TimelineCompany { get; set; }
         public virtual DbSet<TimelineContact> TimelineContact { get; set; }
         public virtual DbSet<User> User { get; set; }
+
+
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.HasAnnotation("ProductVersion", "2.2.6-servicing-10079");
@@ -187,6 +192,68 @@ namespace ProjectArcher_Backend.Models
                     .HasConstraintName("Keyword_Contact_keyword_id_fkey");
             });
 
+            modelBuilder.Entity<MailingCompany>(entity =>
+            {
+                entity.ToTable("Mailing_Company");
+
+                entity.Property(e => e.Id).HasColumnName("id");
+
+                entity.Property(e => e.CompanyId).HasColumnName("company_id");
+
+                entity.Property(e => e.MailingListId).HasColumnName("mailing_list_id");
+
+                entity.HasOne(d => d.Company)
+                    .WithMany(p => p.MailingCompany)
+                    .HasForeignKey(d => d.CompanyId)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("Mailing_Company_company_id_fkey");
+
+                entity.HasOne(d => d.MailingList)
+                    .WithMany(p => p.MailingCompany)
+                    .HasForeignKey(d => d.MailingListId)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("Mailing_Company_mailing_list_id_fkey");
+            });
+
+            modelBuilder.Entity<MailingContact>(entity =>
+            {
+                entity.ToTable("Mailing_Contact");
+
+                entity.Property(e => e.Id).HasColumnName("id");
+
+                entity.Property(e => e.ContactId).HasColumnName("contact_id");
+
+                entity.Property(e => e.MailingListId).HasColumnName("mailing_list_id");
+
+                entity.HasOne(d => d.Contact)
+                    .WithMany(p => p.MailingContact)
+                    .HasForeignKey(d => d.ContactId)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("Mailing_Contact_contact_id_fkey");
+
+                entity.HasOne(d => d.MailingList)
+                    .WithMany(p => p.MailingContact)
+                    .HasForeignKey(d => d.MailingListId)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("Mailing_Contact_mailing_list_id_fkey");
+            });
+
+            modelBuilder.Entity<MailingList>(entity =>
+            {
+                entity.ToTable("Mailing_List");
+
+                entity.Property(e => e.Id).HasColumnName("id");
+
+                entity.Property(e => e.Name)
+                    .IsRequired()
+                    .HasColumnName("name")
+                    .HasMaxLength(250);
+
+                entity.Property(e => e.SendDate)
+                    .HasColumnName("send_date")
+                    .HasColumnType("date");
+            });
+
             modelBuilder.Entity<Timeline>(entity =>
             {
                 entity.Property(e => e.Id).HasColumnName("id");
@@ -280,6 +347,12 @@ namespace ProjectArcher_Backend.Models
             modelBuilder.HasSequence("Company_id_seq");
 
             modelBuilder.HasSequence("Contact_id_seq");
+
+            modelBuilder.HasSequence("Keyword_id_seq");
+
+            modelBuilder.HasSequence("Timeline_id_seq");
+
+            modelBuilder.HasSequence("User_id_seq");
         }
     }
 }

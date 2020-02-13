@@ -33,7 +33,10 @@ namespace ProjectArcher_Backend
             services.AddScoped<ICompanyService, CompanyService>();
             services.AddScoped<ITimelineService, TimelineService>();
             services.AddScoped<IKeywordService, KeywordService>();
+
+            services.AddScoped<IMailingListService, MailingListService>();
             services.AddScoped<IIdentityService, IdentityService>();
+
 
             services.AddCors(options => options.AddPolicy("CorsPolicy", builder =>
             {
