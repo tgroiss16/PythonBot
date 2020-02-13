@@ -59,6 +59,7 @@ namespace ProjectArcher_Backend
             //Comment this out to redirect to https
             //app.UseHttpsRedirection();
 
+            app.UseCors("CorsPolicy");
             app.UseMvc();
         }
     }
