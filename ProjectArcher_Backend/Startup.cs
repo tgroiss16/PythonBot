@@ -33,8 +33,10 @@ namespace ProjectArcher_Backend
             services.AddScoped<ICompanyService, CompanyService>();
             services.AddScoped<ITimelineService, TimelineService>();
             services.AddScoped<IKeywordService, KeywordService>();
-            services.AddScoped<IIdentityService, IdentityService>();
+
             services.AddScoped<IMailingListService, MailingListService>();
+            services.AddScoped<IIdentityService, IdentityService>();
+
 
             services.AddCors(options => options.AddPolicy("CorsPolicy", builder =>
             {
@@ -60,6 +62,7 @@ namespace ProjectArcher_Backend
             //Comment this out to redirect to https
             //app.UseHttpsRedirection();
 
+            app.UseCors("CorsPolicy");
             app.UseMvc();
         }
     }
