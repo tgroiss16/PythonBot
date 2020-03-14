@@ -9,7 +9,7 @@ namespace ProjectArcher_Backend.DTOs
     public class CompanyDTO
     {
         public long Id { get; set; }
-        public bool IsActive { get; set; }
+        public bool? IsActive { get; set; }
         public string City { get; set; }
         public string PostalCode { get; set; }
         public string Street { get; set; }

@@ -14,7 +14,8 @@ namespace ProjectArcher_Backend.Models
         }
 
         public long Id { get; set; }
-        public bool IsActive { get; set; }
+        public bool? IsActive { get; set; }
+        public string Name { get; set; }
         public string City { get; set; }
         public string PostalCode { get; set; }
         public string Street { get; set; }
@@ -26,7 +27,6 @@ namespace ProjectArcher_Backend.Models
         public string Note { get; set; }
         public long? InternalContact { get; set; }
         public long? ExternalContact { get; set; }
-        public string Name { get; set; }
 
         public virtual ICollection<Contact> Contact { get; set; }
         public virtual ICollection<KeywordCompany> KeywordCompany { get; set; }
